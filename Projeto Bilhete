@@ -1,0 +1,158 @@
+public class Usuario {
+
+	// atributos ou propriedades ou variáveis de instância
+	String nome;
+	String cpf;
+	String tipo;
+	
+	// codificação do método construtor para inicializar os atributos do objeto
+	// 1a --> construtor não tem tipo nem mesmo o void
+	// 2a --> construtor tem exatamente o mesmo nome da classe
+	public Usuario(String nome, String cpf, String tipo) {
+		this.nome = nome;  // this é uma referência ao objeto que está sendo criado
+		this.cpf = cpf;
+		this.tipo = tipo;
+	}
+}
+--------------------------------------------------------------------------------------------------------------------
+import java.util.Random;
+
+public class BilheteUnico {
+
+	// atributos ou propriedades ou variáveis de instância
+	int numero;
+	double saldo;
+	static double valorDaPassagem = 4.40; // static indica que o objeto NÃO receberá uma cópia do atributo
+	Usuario usuario;
+
+	// método construtor para inicializar os atributos do objeto no momento da
+	// instância
+	public BilheteUnico(String nome, String cpf, String tipo) {
+		Random gerador = new Random();
+		this.numero = gerador.nextInt(9000) + 1000;
+		this.saldo = 0;
+		this.usuario = new Usuario(nome, cpf, tipo);
+	}
+
+	// método para retornar o valor do saldo do bilhete
+	public double consultarSaldo() {
+		return saldo; // ou return this.saldo;
+	}
+
+	// método para carregar o bilhete
+	public void carregar(double valor) {
+		saldo = saldo + valor; // ou this.saldo = this.saldo + valor;
+	}
+	
+	//método para passar na catraca-> debitar um valor do saldo 
+
+	public void passaNaCatraca() {
+		if(usuario.tipo.equalsIgnoreCase("Normal")) {
+			if(saldo >= valorDaPassagem) {
+				saldo -= valorDaPassagem;
+			}
+		}else {
+			if(saldo >= valorDaPassagem/2) {
+				saldo -= valorDaPassagem/2;
+			}
+		}
+	}
+	
+}
+----------------------------------------------------------------------------------------------
+import static javax.swing.JOptionPane.*;
+import static java.lang.Integer.parseInt;
+
+public class Util {
+
+	//declração do array para armazenar os bilhetes 
+	BilheteUnico[] bilhete = new BilheteUnico[5];
+	
+	//variavel para controlar as posicoes do vetor 
+	int posicao = 0;
+	
+	public void menuPrincipal() {
+		String aux = "Escola uma opção\n1. Administrador\n2. Usuário\n3. Finalizar";
+		int opcao;
+		
+		do {
+			opcao = parseInt(showInputDialog(aux));
+			if(opcao <1 || opcao >3) {
+				showInputDialog(null,"Opção inválida");
+			}else if(opcao == 1){
+				menuAdministrador();
+			}else if(opcao == 2) {
+				menuUsuario();
+			}
+		}while(opcao != 3);
+		
+	}
+	
+	public void menuAdministrador() {
+		String aux = "Escolha uma operação\n1. Cadastrar bilhete\n2. Consultar bilhete\n3. Sair";
+		int opcao;
+		
+		do {
+			opcao = parseInt(showInputDialog(aux));
+			if(opcao <1 || opcao >3) {
+				showInputDialog(null,"Opção inválida");
+			}else if(opcao == 1){
+				cadastrarBilhete();
+			}
+		}while(opcao != 3);
+	}
+	
+    public void menuUsuario() {
+    	String aux = "Escolha uma operação\n1. Consular saldo\n2. Carregar bilhete\n3. Passar catraca\n4. Sair";
+		int opcao;
+		
+		do {
+			opcao = parseInt(showInputDialog(aux));
+			if(opcao <1 || opcao >4) {
+				showInputDialog(null,"Opção inválida");
+			}else {
+				
+			}
+		}while(opcao != 4);
+	
+    }
+	
+    public void cadastrarBilhete() {
+    	if(posicao >= bilhete.length) {
+    		showMessageDialog(null, "Procure uma unidade mais próxima");
+    	}else {
+    		String cpf = showInputDialog("CPF do usuário:");
+    		if(pesquisar(cpf) != -1) { // -1 indica que o CPF n está cadastrado
+    			showMessageDialog(null, cpf + "Já está cadastrado");
+    		}else {
+    			String nome = showInputDialog("Nome do usuário: ");
+    			String tipo = showInputDialog("Tipo (Estudante / Professor / Normal");
+    			bilhete[posicao] = new BilheteUnico(nome, cpf, tipo);
+    			posicao++;
+    		}
+    	}
+    }
+    
+    public int pesquisar(String cpf) {
+    	int aux = -1;
+    	for(int i = 0; i < posicao; i++) {
+    		if(bilhete[i].usuario.cpf.equals(cpf)) {
+    			aux = i;
+    			break;
+    		}
+    	}
+    	return aux;
+    }
+}
+-------------------------------------------------------------------------------------------------
+public class Main {
+
+	public static void main(String[] args) {
+		
+		Util util = new Util();
+		util.menuPrincipal();
+		
+
+	}
+
+}
