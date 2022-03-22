@@ -1,0 +1,23 @@
+--->USANDO JOP PARA GERAR UM INTERFACE EMPRESTADA, PARA SUBISTITUIR O SYSOUT E O SCANNER
+
+import javax.swing.JOptionPane;
+
+public class exemplo1 {
+
+	public static void main(String[] args) {
+		
+		//JOptionPane.showMessageDialog(null, "Bom dia");
+		//JOptionPane.showMessageDialog(null, "Bom dia, mó sono","Caixa do que eu to sentindo", 3);
+        
+		//String nome = JOptionPane.showInputDialog("Tá com sono também?");
+		//JOptionPane.showMessageDialog(null, nome);
+		
+		int valor1 = Integer.parseInt(JOptionPane.showInputDialog("Primeiro valor->"));
+		int valor2 = Integer.parseInt(JOptionPane.showInputDialog("Segundo valor->"));
+		int total = valor1 + valor2;
+		JOptionPane.showMessageDialog(null, "Total =" + total);
+
+		
+	}
+
+}
